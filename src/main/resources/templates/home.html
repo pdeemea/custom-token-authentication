@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+    >
+    
+<head>
+	<title>Template - Home</title>
+</head>
+
+<body>
+	<span th:fragment="title">Template - Home</span>
+
+	<div th:fragment="content">
+		<h2 id="welcomeMessage" class="page-header">Welcome to the Template Project</h2>
+		<div class="welcome-details form-horizontal">
+			<div class="form-group">
+				<div class="col-md-6">
+					<div sec:authorize="isAuthenticated()">
+						<label id="welcomeUsername" class="col-md-6" sec:authentication="username"></label> / 
+						<label id="welcomeUsername" class="col-md-6" sec:authentication="organization"></label> | <a th:href="@{/logout}">Logout</a>
+	                </div> 
+                </div>
+			</div>
+		</div>
+		<div sec:authorize="isAuthenticated()">
+			<ul>
+			<li> <a href="produceException">Click to call operation that throws RuntimeException</a> </li>
+			<li> <a href="special">Click to call operation without the right roles</a> (shall show 403 error page)</li>
+			<li> <a href="doSomeRead">Click to call a service with method level authorization</a> </li>
+			<li> <a href="doSomeWrites">Click to call a service with method level authorization but without the required role</a> </li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

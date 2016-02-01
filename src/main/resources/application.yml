@@ -1,0 +1,32 @@
+security.user:
+  password: pwd
+
+
+logging.level:
+  org.springframework.security.web.contex.HttpSessionSecurityContextRepository: debug
+
+server:
+  port: 8083
+  ssl:
+    enabled: false
+    key-store: /Users/mrosales/Documents/projects/HSCIC/keystore.p12
+    key-password: password
+    key-alias: tomcat
+    key-store-type: PKCS12
+
+login.url: /
+
+endpoints:
+  sensitive: true  # protect all endpoints
+  health:
+    sensitive: false # unprotected
+  security:
+    role: SYS_ADMIN    
+   
+---
+spring:
+   profiles:
+     active: dev
+   thymeleaf:
+    cache: false
+    

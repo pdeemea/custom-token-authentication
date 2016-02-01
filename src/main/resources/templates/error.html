@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      >
+      
+<head>
+	<title>Template - Error</title>
+	
+	
+</head>
+
+<body>
+	<span th:fragment="title">Template - Error</span>
+
+	<div th:fragment="content" class="container">
+	    <div class="row">
+	        <div class="col-md-12">
+	            <div class="error-template">
+	                <h1 id="errorTitle" class="error-title">An error has occurred</h1>
+	                <h3>Please contact support, and supply them with the error details below.</h3>
+	                <h3>If you were saving work, please check that it saved correctly.</h3>
+	            </div>
+	                
+                <div class="alert error-details">
+					<div class="row">
+						<label class="col-md-6 data-label control-label">Error code:</label>
+						<label id="errorCode" class="col-md-6 data-field control-label" th:text="${status}"></label>
+						<label id="errorType" class="col-md-6 data-field control-label" th:text="${error}"></label>
+					</div>
+					<div class="row">
+						<label class="col-md-6 data-label control-label">Message:</label>
+						<label id="errorMessage" class="col-md-6 data-field control-label" th:text="${message}"></label>
+					</div>
+					<div class="row">
+						<label class="col-md-6 data-label control-label">Time:</label>
+						<label th:if="${timestamp != null}" id="errorTime" class="col-md-6 data-field control-label" th:text="${timestamp}"></label>
+						<!--  <label th:if="${timestamp != null}" id="errorTime" class="col-md-6 data-field control-label" th:text="${#temporals.format(timestamp, 'dd-MMM-yyyy HH:mm')}"></label>  -->
+					</div>
+					<div class="row">
+						<label class="col-md-6 data-label ontrol-label">Path:</label>
+						<label id="errorPath" class="col-md-6 data-field control-label" th:text="${path}"></label>
+					</div>
+				</div>
+	        </div>
+	    </div>
+	</div>
+</body>
+
+</html>
