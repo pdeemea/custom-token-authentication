@@ -1,20 +1,10 @@
-security.user:
-  password: pwd
-
-
 logging.level:
   org.springframework.security.web.contex.HttpSessionSecurityContextRepository: debug
 
 server:
   port: 8083
-  ssl:
-    enabled: false
-    key-store: /Users/mrosales/Documents/projects/HSCIC/keystore.p12
-    key-password: password
-    key-alias: tomcat
-    key-store-type: PKCS12
 
-login.url: /
+# Actuator/Security configuration
 
 endpoints:
   sensitive: true  # protect all endpoints
@@ -22,11 +12,32 @@ endpoints:
     sensitive: false # unprotected
   security:
     role: SYS_ADMIN    
+
+# Application configuration
+login.url: /
    
+
+spring:
+  profiles:
+    active: customAuth
+         
 ---
 spring:
-   profiles:
-     active: dev
-   thymeleaf:
+  profiles: dev    
+  thymeleaf:
     cache: false
+    
+---
+spring:
+  profiles: preAuth    
+
+# Pre-Authentication configuration. Sets up the user we want to use and its roles without having to manually login    
+preAuth:
+  username: joe
+  credential: password
+  roles: USER, SYS_ADMIN
+  organization: joeOrg
+  
+    
+    
     
