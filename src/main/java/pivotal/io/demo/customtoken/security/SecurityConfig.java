@@ -3,7 +3,7 @@ package pivotal.io.demo.customtoken.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -107,7 +107,8 @@ public class SecurityConfig {
 
 	}
 
-	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+	//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+	@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
 	public static class PreAuthenticationConfig extends AbstractSecurityConfigurer {
 
 		PreAuthenticationConfiguration config;
@@ -129,7 +130,8 @@ public class SecurityConfig {
 
 	}
 
-	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+	@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
 	public static class CustomTokenAuthenticationConfig extends AbstractSecurityConfigurer {
 
 		CustomTokenAuthenticationConfig(Environment env) {

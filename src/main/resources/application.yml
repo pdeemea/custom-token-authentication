@@ -10,9 +10,11 @@ endpoints:
   sensitive: true  # protect all endpoints
   health:
     sensitive: false # unprotected
-  security:
-    role: SYS_ADMIN    
 
+management:
+  security:
+    role: SYS_ADMIN 
+      
 # Application configuration
 login.url: /
    
@@ -35,7 +37,7 @@ spring:
 preAuth:
   username: joe
   credential: password
-  roles: USER, SYS_ADMIN
+  roles: USER,SYS_ADMIN
   organization: joeOrg
   
     
