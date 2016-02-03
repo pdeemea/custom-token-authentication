@@ -11,4 +11,4 @@ To demonstrate goal 1 you just need to run the app as it is and go to localhost:
 To demonstrate goal 2 you need to activate the profile `preAuth` (In STS, type in preAuth in the Profile field under Run Configurations). The user, credential and roles are read from the `application.yml`.
 
 Issues pending to be resolved:
-- Management endpoint roles is not enforced. In other words, as long as the user is fully authenticated, I am allowed to access any endpoint. The role does not appear to be enforced.
+- `management.security.role` property does not appear to be enforced. In other words, as long as the user is fully authenticated, I am allowed to access any management endpoint regardless whether my user had that role.
