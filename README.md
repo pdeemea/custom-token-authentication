@@ -1,5 +1,5 @@
 # custom-token-authentication
-Prototype to demonstrate how to implement custom token authentication within a Spring/Spring Boot
+Proof of Concept to demonstrate how to implement custom token authentication within a Spring/Spring Boot
 
 Goals:
 
