@@ -3,6 +3,8 @@ logging.level:
 
 server:
   port: 8083
+  error:
+    include-stacktrace: ALWAYS
 
 # Actuator/Security configuration
 
@@ -14,7 +16,9 @@ endpoints:
 management:
   security:
     role: SYS_ADMIN 
-      
+
+security.filter-dispatcher-types: ASYNC,REQUEST,ERROR
+
 # Application configuration
 login.url: /
    

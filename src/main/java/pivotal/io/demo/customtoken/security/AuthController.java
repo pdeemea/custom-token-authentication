@@ -29,11 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AuthController {
 
-	@Value("${login.url:/login}")
-	private String loginUrl;
+	@Value("redirect:${login.url:/login}")
+	private String redirectLoginUrl;
 
-	@Value("${home.url:/home}")
-	private String homeUrl;
+	@Value("redirect:${home.url:/home}")
+	private String directHomeUrl;
 
 	@Autowired
 	private AuthenticationManager authProvider;
@@ -43,7 +43,7 @@ public class AuthController {
 	public String auth(@RequestParam(required=false) String token, Principal principal, HttpServletRequest request,
 			HttpServletResponse response) {
 		if (principal != null) {
-			return "redirect:" + homeUrl;
+			return directHomeUrl;
 		}
 
 		if (StringUtils.isEmpty(token)) {
@@ -54,7 +54,7 @@ public class AuthController {
 		Authentication auth = authenticate(token);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		
-		return "redirect:" + homeUrl;
+		return directHomeUrl;
 
 	}
 
@@ -84,7 +84,7 @@ public class AuthController {
 	@ExceptionHandler({AuthenticationCredentialsNotFoundException.class})
 	public String credentialsNotFound() {
 		System.err.println("Credentials not found Exception");
-		return "redirect:" + loginUrl;	
+		return redirectLoginUrl;	
 	}
 	
 }

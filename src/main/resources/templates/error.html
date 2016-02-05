@@ -23,9 +23,13 @@
 	                
                 <div class="alert error-details">
 					<div class="row">
-						<label class="col-md-6 data-label control-label">Error code:</label>
+						<label class="col-md-6 data-label control-label">HTTP Error code:</label>
 						<label id="errorCode" class="col-md-6 data-field control-label" th:text="${status}"></label>
 						<label id="errorType" class="col-md-6 data-field control-label" th:text="${error}"></label>
+					</div>
+					<div class="row">
+						<label class="col-md-6 data-label control-label">Error code:</label>
+						<label id="errorMessage" class="col-md-6 data-field control-label" th:text="${errorCode}"></label>
 					</div>
 					<div class="row">
 						<label class="col-md-6 data-label control-label">Message:</label>
