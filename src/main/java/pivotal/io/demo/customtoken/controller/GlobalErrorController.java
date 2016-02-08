@@ -4,14 +4,17 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.context.request.RequestAttributes;
+
+import pivotal.io.demo.customtoken.security.AuthenticatedUser;
 
 /**
  * Our Error Handling strategy is quite simple: We want to leverage Spring Boot out-of-the-box error handling which is provided by the 
@@ -35,7 +38,7 @@ public class GlobalErrorController extends BasicErrorController {
 
 	@Override
 	protected HttpStatus getStatus(HttpServletRequest request) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		AuthenticatedUser auth = getAuthenticatedUser(request);
 		System.out.println(auth);
 		HttpStatus status = super.getStatus(request);
 		if (!HttpStatus.NOT_FOUND.equals(status)) {
@@ -46,7 +49,20 @@ public class GlobalErrorController extends BasicErrorController {
 		return status;
 	}
 	
-
+	private AuthenticatedUser getAuthenticatedUser(HttpServletRequest request) {
+		HttpSession session =  request.getSession(false);
+		if (session == null) {
+			return null;
+		}
+		SecurityContext ctx = (SecurityContext) session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+		if (ctx.getAuthentication() instanceof AuthenticatedUser) {
+			return (AuthenticatedUser)ctx.getAuthentication();
+		}else {
+			return null;
+		}
+		
+		
+	}
 	static class ErrorCodeAppender implements ErrorAttributes {
 
 		private ErrorAttributes source;
