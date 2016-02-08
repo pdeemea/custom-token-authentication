@@ -10,5 +10,3 @@ I think another way to achieve this goal, but i have not tried it yet, is to rel
 To demonstrate goal 1 you just need to run the app as it is and go to localhost:8083/. This is the public landing page. If you try to access /home you will be redirected back to the landing page. There are a few links to demonstrate login, logout, allowed operations, not allowed operations and error handling of unexpected errors.
 To demonstrate goal 2 you need to activate the profile `preAuth` (In STS, type in preAuth in the Profile field under Run Configurations). The user, credential and roles are read from the `application.yml`.
 
-Issues pending to be resolved:
-- `management.security.role` property does not appear to be enforced. In other words, as long as the user is fully authenticated, I am allowed to access any management endpoint regardless whether my user had that role.

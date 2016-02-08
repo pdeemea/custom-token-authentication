@@ -14,6 +14,7 @@ endpoints:
     sensitive: false # unprotected
 
 management:
+  context-path: /management/
   security:
     role: SYS_ADMIN 
 

@@ -35,6 +35,8 @@ public class GlobalErrorController extends BasicErrorController {
 
 	@Override
 	protected HttpStatus getStatus(HttpServletRequest request) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(auth);
 		HttpStatus status = super.getStatus(request);
 		if (!HttpStatus.NOT_FOUND.equals(status)) {
 			return status;	

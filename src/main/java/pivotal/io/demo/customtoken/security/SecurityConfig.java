@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
@@ -52,17 +53,20 @@ public class SecurityConfig {
 	@Autowired
 	private PreAuthenticationConfiguration config;
 
+	@Autowired
+	private ManagementServerProperties management;
+	
 
 	@Bean
 	@Profile("customAuth")
 	public WebSecurityConfigurerAdapter config() {
-		return new CustomTokenAuthenticationConfig(env);
+		return new CustomTokenAuthenticationConfig(env, management);
 	}
 
 	@Bean
 	@Profile("preAuth")
 	public WebSecurityConfigurerAdapter selfLogin() {
-		return new PreAuthenticationConfig(env, config);
+		return new PreAuthenticationConfig(env, management, config);
 	}
 
 	@Bean
@@ -72,10 +76,13 @@ public class SecurityConfig {
 
 	static abstract class AbstractSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		protected Environment env;
-
-		AbstractSecurityConfigurer(Environment env) {
+		protected ManagementServerProperties mgt;
+		
+		AbstractSecurityConfigurer(Environment env, ManagementServerProperties mgt) {
 			super();
 			this.env = env;
+			this.mgt = mgt;
+ 
 		}
 
 		@Override
@@ -90,10 +97,15 @@ public class SecurityConfig {
 			disableFeatures(http);
 			redirectUnauthenticatedUsers(http);
 			
-			http.authorizeRequests().antMatchers("/auth", "/logout").permitAll().anyRequest().authenticated();
+			http.authorizeRequests().antMatchers("/auth", "/logout").permitAll()
+									.antMatchers(getPath("health")).permitAll()
+									.antMatchers(getPath("**")).hasAnyRole(mgt.getSecurity().getRole())
+									.anyRequest().authenticated();
 		}
 
-		
+		private String getPath(String endpoint) {
+			return (mgt.getContextPath() == null ? "/" : mgt.getContextPath()) + endpoint;	
+		}
 
 		private void redirectUnauthenticatedUsers(HttpSecurity http) throws Exception {
 			http.exceptionHandling()
@@ -129,8 +141,8 @@ public class SecurityConfig {
 		PreAuthenticationConfiguration config;
 		
 
-		public PreAuthenticationConfig(Environment env, PreAuthenticationConfiguration config) {
-			super(env);
+		public PreAuthenticationConfig(Environment env, ManagementServerProperties mgt, PreAuthenticationConfiguration config) {
+			super(env, mgt);
 			this.config = config;
 			
 			logger.info("Created PreAuthenticationConfig");
@@ -149,8 +161,8 @@ public class SecurityConfig {
 	@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
 	public static class CustomTokenAuthenticationConfig extends AbstractSecurityConfigurer {
 
-		CustomTokenAuthenticationConfig(Environment env) {
-			super(env);
+		CustomTokenAuthenticationConfig(Environment env, ManagementServerProperties mgt) {
+			super(env, mgt);
 			this.env = env;
 			
 			logger.info("Created CustomTokenAuthenticationConfig");
